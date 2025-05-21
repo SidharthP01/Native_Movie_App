@@ -1,12 +1,32 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, Image } from "react-native";
+import React from "react";
+import { images } from "@/constants/images";
+import { icons } from "@/constants/icons";
+import SearchBar from "@/components/SearchBar";
+import { router } from "expo-router";
 
-const search = () => {
+const Search = () => {
   return (
-    <View>
-      <Text>search</Text>
-    </View>
-  )
-}
+    <View className="flex-1 bg-primary">
+      <Image
+        source={images.bg}
+        className="absolute w-full z-0"
+        resizeMode="cover"
+      />
 
-export default search
+      <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
+      <SearchBar
+        onPress={() => {
+          router.push("/search");
+        }}
+        placeholder="Search for Movies.."
+      />
+
+      <Text className="text-lg text-white font-bold mt-5 mb-3">
+        Searching for Movie
+      </Text>
+    </View>
+  );
+};
+
+export default Search;
