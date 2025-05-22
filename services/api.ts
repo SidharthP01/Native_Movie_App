@@ -13,7 +13,7 @@ export const fetchMovies = async ({ query }: { query: string }) => {
         query
       )}&api_key=${TMDB_CONFIG.API_KEY}`
     : `${TMDB_CONFIG.BASE_URL}/discover/movie?api_key=${TMDB_CONFIG.API_KEY}&sort_by=popularity.desc`;
-  console.log(endpoint);
+  //console.log(endpoint);
 
   const response = await fetch(endpoint);
 

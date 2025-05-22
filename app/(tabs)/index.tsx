@@ -42,6 +42,8 @@ export default function Index() {
             router.push("/search");
           }}
           placeholder="Search for Movies.."
+          onChangeText={() => {}}
+          value=""
         />
 
         {moviesLoading ? (
