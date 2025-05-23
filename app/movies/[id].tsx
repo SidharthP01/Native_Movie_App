@@ -1,17 +1,18 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
 import {
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
   View,
+  Text,
+  Image,
+  ActivityIndicator,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
 } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { icons } from "@/constants/icons";
-import { fetchMoviesDetails } from "@/services/api";
 import useFetch from "@/services/useFetch";
+import { fetchMoviesDetails } from "@/services/api";
 
 interface MovieInfoProps {
   label: string;
@@ -42,6 +43,14 @@ const Details = () => {
       </SafeAreaView>
     );
 
+  const trailers = movie?.videos?.results.filter(
+    (video) => video.type === "Trailer" && video.site === "YouTube"
+  );
+  let TrailerURL;
+  trailers
+    ? (TrailerURL = `https://www.youtube.com/watch?v=${trailers[0].key}`)
+    : (TrailerURL = "No Trailer");
+
   return (
     <View className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -54,7 +63,12 @@ const Details = () => {
             resizeMode="stretch"
           />
 
-          <TouchableOpacity className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center">
+          <TouchableOpacity
+            className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center"
+            onPress={() => {
+              Linking.openURL(TrailerURL);
+            }}
+          >
             <Image
               source={icons.play}
               className="w-6 h-7 ml-1"

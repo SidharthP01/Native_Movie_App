@@ -23,6 +23,11 @@ interface TrendingMovie {
   poster_url: string;
 }
 
+interface TrendingCardProps {
+  movie: TrendingMovie;
+  index: number;
+}
+
 interface MovieDetails {
   adult: boolean;
   backdrop_path: string | null;
@@ -69,9 +74,20 @@ interface MovieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
-}
 
-interface TrendingCardProps {
-  movie: TrendingMovie;
-  index: number;
+  videos: {
+    id: number;
+    results: {
+      iso_639_1: string;
+      iso_3166_1: string;
+      name: string;
+      key: string;
+      site: string;
+      size: number;
+      type: string;
+      official: boolean;
+      published_at: string;
+      id: string;
+    }[];
+  };
 }
