@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import React from "react";
 
 const saved = () => {
   return (
-    <View>
+    <View className="flex-1 bg-primary">
       <Text>saved</Text>
     </View>
-  )
-}
+  );
+};
 
-export default saved
+export default saved;
