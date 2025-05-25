@@ -1,4 +1,4 @@
 Favorites tab
 Multiple profiles
-
-
+Recommendations
+Video player 

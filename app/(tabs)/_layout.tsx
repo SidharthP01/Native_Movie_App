@@ -1,8 +1,9 @@
-import { ImageBackground, Image, Text, View } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
+import { BookmarkProvider } from "@/contexts/BookmarkContexts";
+import { Tabs } from "expo-router";
+import React from "react";
+import { Image, ImageBackground, Text, View } from "react-native";
 
 function TabIcon({ focused, icon, title }: any) {
   if (focused) {
@@ -27,72 +28,74 @@ function TabIcon({ focused, icon, title }: any) {
 
 const _layout = () => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarItemStyle: {
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        tabBarStyle: {
-          backgroundColor: "#0F0D23",
-          borderRadius: 50,
-          marginHorizontal: 20,
-          marginBottom: 36,
-          height: 52,
-          position: "absolute",
-          overflow: "hidden",
-          borderTopWidth: 0,
-          borderColor: "#0F0D23",
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.home} title="Home" />
-          ),
+    <BookmarkProvider>
+      <Tabs
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarItemStyle: {
+            width: "100%",
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          tabBarStyle: {
+            backgroundColor: "#0F0D23",
+            borderRadius: 50,
+            marginHorizontal: 20,
+            marginBottom: 36,
+            height: 52,
+            position: "absolute",
+            overflow: "hidden",
+            borderTopWidth: 0,
+            borderColor: "#0F0D23",
+          },
         }}
-      />
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <TabIcon focused={focused} icon={icons.home} title="Home" />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="search"
-        options={{
-          title: "Search",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.search} title="Search" />
-          ),
-        }}
-      />
+        <Tabs.Screen
+          name="search"
+          options={{
+            title: "Search",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <TabIcon focused={focused} icon={icons.search} title="Search" />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="saved"
-        options={{
-          title: "Saved",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Saved" />
-          ),
-        }}
-      />
+        <Tabs.Screen
+          name="saved"
+          options={{
+            title: "Saved",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <TabIcon focused={focused} icon={icons.save} title="Saved" />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.person} title="Profile" />
-          ),
-        }}
-      />
-    </Tabs>
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <TabIcon focused={focused} icon={icons.person} title="Profile" />
+            ),
+          }}
+        />
+      </Tabs>
+    </BookmarkProvider>
   );
 };
 

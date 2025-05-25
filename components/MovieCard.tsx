@@ -1,14 +1,27 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import React from "react";
-import { Link } from "expo-router";
 import { icons } from "@/constants/icons";
+import { useBookmarks } from "@/contexts/BookmarkContexts";
+import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import React from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+
+type MovieCardProps = {
+  id: number;
+  title: string;
+  poster_path: string;
+  vote_average: number;
+  release_date: string;
+};
+
 const MovieCard = ({
   id,
   poster_path,
   title,
   vote_average,
   release_date,
-}: Movie) => {
+}: MovieCardProps) => {
+  const { toggleBookmark, isBookmarked } = useBookmarks();
+  const bookmarked = isBookmarked(id);
   return (
     <Link href={`/movies/${id}`} asChild>
       <TouchableOpacity className="w-[30%] mb-5">
@@ -21,6 +34,24 @@ const MovieCard = ({
           className="w-full h-52 rounded-lg"
           resizeMode="cover"
         />
+        <TouchableOpacity
+          onPress={() =>
+            toggleBookmark({
+              id,
+              poster_path,
+              title,
+              vote_average,
+              release_date,
+            })
+          }
+          className="absolute top-2 right-2 z-10"
+        >
+          <Ionicons
+            name={bookmarked ? "bookmark" : "bookmark-outline"}
+            size={20}
+            color={bookmarked ? "yellow" : "white"}
+          />
+        </TouchableOpacity>
         <Text className="text-sm font-bold text-white mt-2" numberOfLines={1}>
           {title}
         </Text>
