@@ -12,7 +12,7 @@ const TrendingCard = ({
       <TouchableOpacity className="w-32 relative pl-5">
         <Image
           source={{ uri: poster_url }}
-          className="w-full h-52 rounded-lg"
+          className="w-full h-52 rounded-lg "
           resizeMode="cover"
         />
         <View className="absolute bottom-9 -left-3.5 px-2 py-1 rounded-full">

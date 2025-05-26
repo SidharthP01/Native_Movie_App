@@ -1,5 +1,4 @@
 // saved.tsx
-
 import MovieCard from "@/components/MovieCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";

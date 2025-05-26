@@ -1,5 +1,3 @@
-// context/BookmarkContext.tsx
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
   createContext,
@@ -9,7 +7,6 @@ import React, {
   useState,
 } from "react";
 
-// 1. Movie Type
 export type Movie = {
   id: number;
   title: string;
@@ -18,19 +15,16 @@ export type Movie = {
   release_date: string;
 };
 
-// 2. Context Type
 type BookmarkContextType = {
   bookmarks: Movie[];
   toggleBookmark: (movie: Movie) => void;
   isBookmarked: (id: number) => boolean;
 };
 
-// 3. Create Context
 const BookmarkContext = createContext<BookmarkContextType | undefined>(
   undefined
 );
 
-// 4. Custom Hook to Use Context
 export const useBookmarks = () => {
   const context = useContext(BookmarkContext);
   if (!context)
@@ -38,10 +32,8 @@ export const useBookmarks = () => {
   return context;
 };
 
-// 5. AsyncStorage Key
 const STORAGE_KEY = "@bookmarked_movies";
 
-// 6. Provider Component
 export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
   const [bookmarks, setBookmarks] = useState<Movie[]>([]);
 

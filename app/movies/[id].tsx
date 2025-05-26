@@ -35,7 +35,7 @@ const Details = () => {
     fetchMoviesDetails(id as string)
   );
 
-  // Safe defaults for hooks (must not be conditionally called!)
+  // Safe defaults for hooks
   const thumbnail = movie?.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie?.poster_path}`
     : "";
@@ -68,6 +68,7 @@ const Details = () => {
   return (
     <View className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+        {/* MediaHeader */}
         <MediaHeader thumbnail={thumbnail} trailerKey={trailerKey} />
 
         <View className="flex-col items-start justify-center mt-5 px-5">

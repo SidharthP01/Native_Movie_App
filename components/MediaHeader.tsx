@@ -1,5 +1,5 @@
-import React from "react";
-import { ImageBackground, View } from "react-native";
+import React, { useState, useCallback } from "react";
+import { ImageBackground, View, StyleSheet } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 type MediaHeaderProps = {
@@ -8,19 +8,39 @@ type MediaHeaderProps = {
 };
 
 const MediaHeader = ({ thumbnail, trailerKey }: MediaHeaderProps) => {
-  console.log(trailerKey);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  const onChangeState = useCallback((state: string) => {
+    if (state === "playing") {
+      setHasStarted(true);
+    }
+  }, []);
+
   return (
-    <View className="w-full h-[400px]">
-      <ImageBackground
-        source={{ uri: thumbnail }}
-        resizeMode="cover"
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      >
-        {trailerKey && (
-          <YoutubePlayer height={220} play={false} videoId={trailerKey} />
+    <>
+      <View style={{ width: "100%", height: 200, position: "relative" }}>
+        {!hasStarted && (
+          <ImageBackground
+            source={{ uri: thumbnail }}
+            resizeMode="stretch"
+            style={StyleSheet.absoluteFillObject}
+          />
         )}
-      </ImageBackground>
-    </View>
+
+        {trailerKey && (
+          <View style={StyleSheet.absoluteFillObject} className="items-stretch">
+            <YoutubePlayer
+              height={400}
+              play={isPlaying}
+              videoId={trailerKey}
+              onChangeState={onChangeState}
+              width={"100%"}
+            />
+          </View>
+        )}
+      </View>
+    </>
   );
 };
 
