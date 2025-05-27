@@ -22,6 +22,7 @@ const MovieCard = ({
 }: MovieCardProps) => {
   const { toggleBookmark, isBookmarked } = useBookmarks();
   const bookmarked = isBookmarked(id);
+
   return (
     <Link href={`/movies/${id}`} asChild>
       <TouchableOpacity className="w-[30%] mb-5">

@@ -8,13 +8,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { useVideoPlayer, VideoView } from "expo-video";
 import MediaHeader from "@/components/MediaHeader";
 import { icons } from "@/constants/icons";
 import { fetchMoviesDetails } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { updateGenreCount } from "@/services/appwrite";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 interface MovieInfoProps {
   label: string;
   value?: string | number | null;
@@ -47,13 +47,11 @@ const Details = () => {
       (video) => video.type === "Trailer" && video.site === "YouTube"
     )?.key ?? "";
 
-  // const trailerUrl = trailerKey
-  //   ? `https://www.youtube.com/watch?v=${trailerKey}`
-  //   : "";
+  const imdbId = movie?.imdb_id;
+  const ImdbURL = imdbId ? `https://vidsrc.xyz/embed/movie?tmdb=${imdbId}` : "";
 
-  // const trailerPlayer = useVideoPlayer(trailerUrl, (player) => {
-  //   player.loop = false;
-  //   player.play();
+  // const MoviePlayer = useVideoPlayer(ImdbURL, (player) => {
+  //   player.showNowPlayingNotification = true;
   // });
   // const trailerPlayer = trailerKey ? (
   //   <YoutubePlayer height={220} play={false} videoId={trailerKey} />
@@ -77,7 +75,11 @@ const Details = () => {
     <View className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         {/* MediaHeader */}
-        <MediaHeader thumbnail={thumbnail} trailerKey={trailerKey} />
+        <MediaHeader
+          thumbnail={thumbnail}
+          trailerKey={trailerKey}
+          ImdbURL={ImdbURL}
+        />
 
         <View className="flex-col items-start justify-center mt-5 px-5">
           <Text className="text-white font-bold text-xl">{movie?.title}</Text>

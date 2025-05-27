@@ -45,7 +45,7 @@ export default function Index() {
   } = useFetch(() =>
     topGenres ? fetchMoviesByGenre(topGenres.slice(0, 2)) : Promise.resolve([])
   );
-
+  console.log(suggestedMovies);
   return (
     <View className="flex-1 bg-primary">
       <Image
