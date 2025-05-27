@@ -1,5 +1,12 @@
 import React, { useState, useCallback } from "react";
-import { ImageBackground, View, StyleSheet } from "react-native";
+import {
+  ImageBackground,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 type MediaHeaderProps = {
@@ -40,8 +47,26 @@ const MediaHeader = ({ thumbnail, trailerKey }: MediaHeaderProps) => {
           </View>
         )}
       </View>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Watch Movie</Text>
+      </TouchableOpacity>
     </>
   );
 };
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#221F3D",
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 8,
+    width: "90%",
+    marginLeft: 20,
+  },
+  buttonText: {
+    color: "#FFF",
+    fontWeight: "bold",
+  },
+});
 
 export default MediaHeader;

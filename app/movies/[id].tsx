@@ -13,6 +13,8 @@ import MediaHeader from "@/components/MediaHeader";
 import { icons } from "@/constants/icons";
 import { fetchMoviesDetails } from "@/services/api";
 import useFetch from "@/services/useFetch";
+import { updateGenreCount } from "@/services/appwrite";
+import { useEffect } from "react";
 interface MovieInfoProps {
   label: string;
   value?: string | number | null;
@@ -56,6 +58,12 @@ const Details = () => {
   // const trailerPlayer = trailerKey ? (
   //   <YoutubePlayer height={220} play={false} videoId={trailerKey} />
   // ) : null;
+
+  useEffect(() => {
+    if (movie?.genres) {
+      movie.genres.forEach((genre) => updateGenreCount(genre.id, genre.name));
+    }
+  }, [movie]);
 
   if (loading) {
     return (

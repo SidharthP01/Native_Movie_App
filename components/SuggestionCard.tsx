@@ -1,33 +1,35 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
+import { Link } from "expo-router";
 
 type SuggestionCardProps = {
-  id: number;
-  title: string;
-  poster_path: string;
-  vote_average: number;
-  release_date: string;
+  movie: {
+    id: number;
+    title: string;
+    poster_path: string;
+  };
 };
 
-const SuggestionCard = ({
-  id,
-  poster_path,
-  title,
-  vote_average,
-  release_date,
-}: SuggestionCardProps) => {
+const SuggestionCard = ({ movie }: SuggestionCardProps) => {
   return (
-    <TouchableOpacity className="w-[30%] mb-5">
-      <Image
-        source={{
-          uri: poster_path
-            ? `https://image.tmdb.org/t/p/w500${poster_path}`
-            : "https://placehold.co/600x400/1a1a1a/FFFFFF.png",
-        }}
-        className="w-full h-52 rounded-lg"
-        resizeMode="cover"
-      />
-    </TouchableOpacity>
+    <Link href={`/movies/${movie.id}`} asChild>
+      <TouchableOpacity className="w-32 relative pl-5">
+        <Image
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          }}
+          className="w-full h-52 rounded-lg"
+          resizeMode="cover"
+        />
+
+        <Text
+          className="text-sm font-bold mt-2 text-light-200 ml-1"
+          numberOfLines={2}
+        >
+          {movie.title}
+        </Text>
+      </TouchableOpacity>
+    </Link>
   );
 };
 

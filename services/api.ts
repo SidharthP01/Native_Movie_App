@@ -51,3 +51,18 @@ export const fetchMoviesDetails = async (
     throw err;
   }
 };
+
+export const fetchMoviesByGenre = async (
+  genreIds: number[]
+): Promise<Movie[]> => {
+  const genreParam = genreIds.join(",");
+  const endpoint = `${TMDB_CONFIG.BASE_URL}/discover/movie?api_key=${TMDB_CONFIG.API_KEY}&with_genres=${genreParam}&sort_by=popularity.desc`;
+
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: TMDB_CONFIG.headers,
+  });
+  if (!response.ok) throw new Error("Failed to fetch genre-based movies");
+  const data = await response.json();
+  return data.results;
+};

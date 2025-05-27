@@ -3,6 +3,7 @@ import { Client, Databases, ID, Query } from "react-native-appwrite";
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
+const GENRE_ID = process.env.EXPO_PUBLIC_APPWRITE_GENRE_ID!;
 
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
@@ -45,6 +46,29 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
   }
 };
 
+export const updateGenreCount = async (genreId: number, genreName: string) => {
+  try {
+    const result = await database.listDocuments(DATABASE_ID, GENRE_ID, [
+      Query.equal("genreId", genreId),
+    ]);
+
+    if (result.documents.length > 0) {
+      const doc = result.documents[0];
+      await database.updateDocument(DATABASE_ID, GENRE_ID, doc.$id, {
+        count: doc.count + 1,
+      });
+    } else {
+      await database.createDocument(DATABASE_ID, GENRE_ID, ID.unique(), {
+        genreId,
+        name: genreName,
+        count: 1,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const getTrendingMovies = async (): Promise<
   TrendingMovie[] | undefined
 > => {
@@ -57,5 +81,18 @@ export const getTrendingMovies = async (): Promise<
   } catch (err) {
     console.log(err);
     return undefined;
+  }
+};
+
+export const getTopGenres = async (): Promise<number[] | undefined> => {
+  try {
+    const result = await database.listDocuments(DATABASE_ID, GENRE_ID, [
+      Query.orderAsc("count"),
+      Query.limit(2),
+    ]);
+    return result.documents.map((doc) => doc.genreId);
+  } catch (err) {
+    console.log(err);
+    return [];
   }
 };
