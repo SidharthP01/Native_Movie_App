@@ -2,6 +2,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   ActivityIndicator,
   Image,
+  Linking,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -29,6 +30,26 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
   </View>
 );
 
+interface MovieLinkProps {
+  label: string;
+  url?: string | null;
+}
+
+const MovieLink = ({ label, url }: MovieLinkProps) => {
+  if (!url) return null;
+
+  return (
+    <View className="flex-col items-start justify-center mt-5">
+      <Text className="text-light-200 font-normal text-sm">{label}</Text>
+      <TouchableOpacity onPress={() => Linking.openURL(url)}>
+        <Text className="text-accent font-bold text-sm mt-2 underline">
+          {url}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const Details = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
@@ -48,7 +69,7 @@ const Details = () => {
     )?.key ?? "";
 
   const imdbId = movie?.imdb_id;
-  const ImdbURL = imdbId ? `https://vidsrc.xyz/embed/movie?tmdb=${imdbId}` : "";
+  const ImdbURL = imdbId ? `https://vidsrc.xyz/embed/movie?imdb=${imdbId}` : "";
 
   // const MoviePlayer = useVideoPlayer(ImdbURL, (player) => {
   //   player.showNowPlayingNotification = true;
@@ -106,6 +127,8 @@ const Details = () => {
             label="Genres"
             value={movie?.genres?.map((g) => g.name).join(" • ") || "N/A"}
           />
+
+          <MovieLink label="Homepage Link" url={movie?.homepage} />
 
           <View className="flex flex-row justify-between w-1/2">
             <MovieInfo

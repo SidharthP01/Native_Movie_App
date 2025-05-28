@@ -6,7 +6,7 @@ type SuggestionCardProps = {
   movie: {
     id: number;
     title: string;
-    poster_path: string;
+    backdrop_path: string;
   };
 };
 
@@ -16,7 +16,7 @@ const SuggestionCard = ({ movie }: SuggestionCardProps) => {
       <TouchableOpacity className="w-64 h-36 rounded-lg overflow-hidden mr-4 relative">
         <Image
           source={{
-            uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+            uri: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
           }}
           className="w-full h-full absolute"
           resizeMode="stretch"

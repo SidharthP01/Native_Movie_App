@@ -16,6 +16,7 @@ import { getTrendingMovies, getTopGenres } from "@/services/appwrite";
 import MovieCard from "@/components/MovieCard";
 import TrendingCard from "@/components/TrendingCard";
 import SuggestionCard from "@/components/SuggestionCard";
+import { useEffect, useState } from "react";
 
 export default function Index() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function Index() {
     error: trendingError,
   } = useFetch(getTrendingMovies);
 
+  console.log(trendingMovies);
   const {
     data: Movies,
     loading: moviesLoading,
@@ -38,14 +40,30 @@ export default function Index() {
     error: genresError,
   } = useFetch(getTopGenres); // get top genres based on user's interactions
 
-  const {
-    data: suggestedMovies,
-    loading: suggestionsLoading,
-    error: suggestionsError,
-  } = useFetch(() =>
-    topGenres ? fetchMoviesByGenre(topGenres.slice(0, 2)) : Promise.resolve([])
-  );
-  console.log(suggestedMovies);
+  const [suggestedMovies, setSuggestedMovies] = useState<Movie[]>([]);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(true);
+  const [suggestionsError, setSuggestionsError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!topGenres || topGenres.length === 0) return;
+
+      setSuggestionsLoading(true);
+      setSuggestionsError(null);
+
+      try {
+        const movies = await fetchMoviesByGenre(topGenres.slice(0, 2));
+        setSuggestedMovies(movies);
+      } catch (error) {
+        setSuggestionsError(error as Error);
+      } finally {
+        setSuggestionsLoading(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [topGenres]);
+
   return (
     <View className="flex-1 bg-primary">
       <Image

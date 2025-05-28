@@ -23,7 +23,7 @@ const TrendingCard = ({
           >
             <Image
               source={images.rankingGradient}
-              className="size-14"
+              className="size-14 py-4"
               resizeMode="cover"
             />
           </MaskedView>

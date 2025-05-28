@@ -57,11 +57,21 @@ const MediaHeader = ({ thumbnail, trailerKey, ImdbURL }: MediaHeaderProps) => {
         {trailerKey && isPlayingTrailer && (
           <View style={StyleSheet.absoluteFillObject}>
             <YoutubePlayer
-              height={200}
-              play={isPlayingTrailer}
+              height={300}
+              loop={true}
+              play={true}
+              mute={true}
               videoId={trailerKey}
+              playlist={[trailerKey]}
               onChangeState={onChangeState}
-              width={"100%"}
+              initialPlayerParams={{
+                controls: 0,
+                modestbranding: true,
+                rel: 0,
+                showinfo: 0,
+                fs: 0,
+                showClosedCaptions: false,
+              }}
             />
           </View>
         )}
