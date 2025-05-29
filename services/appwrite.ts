@@ -1,5 +1,5 @@
 //track the searches made by user
-import { Client, Databases, ID, Query } from "react-native-appwrite";
+import { Account, Client, Databases, ID, Query } from "react-native-appwrite";
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
@@ -8,6 +8,64 @@ const GENRE_ID = process.env.EXPO_PUBLIC_APPWRITE_GENRE_ID!;
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
   .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!);
+
+type createUserAccount = {
+  email: string;
+  password: string;
+  name: string;
+};
+type LogineUserAccount = {
+  email: string;
+  password: string;
+};
+
+//creating an account
+const account = new Account(client);
+
+export async function createAccount({
+  email,
+  password,
+  name,
+}: createUserAccount) {
+  try {
+    return await account.create(ID.unique(), email, password, name);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+// login
+
+export async function loginAccount({ email, password }: LogineUserAccount) {
+  try {
+    return await account.createEmailPasswordSession(email, password);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+//current user
+
+export async function getCurrentUser() {
+  try {
+    return await account.get();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+//Logout
+export async function logoutAccount() {
+  try {
+    return await account.deleteSession("current");
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
 const database = new Databases(client);
 export const updateSearchCount = async (query: string, movie: Movie) => {
