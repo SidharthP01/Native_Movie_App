@@ -1,22 +1,22 @@
+import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
+import SuggestionCard from "@/components/SuggestionCard";
+import TrendingCard from "@/components/TrendingCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { Link, useRouter } from "expo-router";
+import { fetchMovies, fetchMoviesByGenre } from "@/services/api";
+import { getTopGenres, getTrendingMovies } from "@/services/appwrite";
+import useFetch from "@/services/useFetch";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
-  Text,
-  View,
-  Image,
-  ScrollView,
   ActivityIndicator,
   FlatList,
+  Image,
+  ScrollView,
+  Text,
+  View,
 } from "react-native";
-import useFetch from "@/services/useFetch";
-import { fetchMovies, fetchMoviesByGenre } from "@/services/api";
-import { getTrendingMovies, getTopGenres } from "@/services/appwrite";
-import MovieCard from "@/components/MovieCard";
-import TrendingCard from "@/components/TrendingCard";
-import SuggestionCard from "@/components/SuggestionCard";
-import { useEffect, useState } from "react";
 
 export default function Index() {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function Index() {
     error: trendingError,
   } = useFetch(getTrendingMovies);
 
-  console.log(trendingMovies);
+  //console.log(trendingMovies);
   const {
     data: Movies,
     loading: moviesLoading,
