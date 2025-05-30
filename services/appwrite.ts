@@ -1,4 +1,5 @@
 //track the searches made by user
+import { Models } from "appwrite";
 import { Account, Client, Databases, ID, Query } from "react-native-appwrite";
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
@@ -9,60 +10,63 @@ const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
   .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!);
 
-type createUserAccount = {
-  email: string;
-  password: string;
-  name: string;
-};
-type LogineUserAccount = {
-  email: string;
-  password: string;
-};
-
 //creating an account
 const account = new Account(client);
 
-export async function createAccount({
-  email,
-  password,
-  name,
-}: createUserAccount) {
+interface SessionToken {
+  $createdAt: string;
+  $id: string;
+  expire: string;
+  phrase: string;
+  secret: string;
+  userId: string;
+}
+
+export async function sendOTP(email: string): Promise<SessionToken> {
   try {
-    return await account.create(ID.unique(), email, password, name);
-  } catch (error) {
-    console.log(error);
-    throw error;
+    const response = await account.createEmailToken(ID.unique(), email);
+    console.log("OTP sent");
+    return response;
+  } catch (error: any) {
+    console.error(`Error sending OTP: ${error.message}`);
+    return error;
   }
 }
 
-// login
-
-export async function loginAccount({ email, password }: LogineUserAccount) {
+export async function verifyOTP(
+  email: string,
+  otp: string
+): Promise<Models.User<{}>> {
   try {
-    return await account.createEmailPasswordSession(email, password);
-  } catch (error) {
-    console.log(error);
-    throw error;
+    const session = await account.createSession(email, otp);
+    console.log("Session created successfully");
+
+    // Fetch the current user after session created
+    const user = await account.get(); // returns Models.User<{}>
+
+    return user;
+  } catch (error: any) {
+    console.error(`Error verifying OTP: ${error.message}`);
+    throw error; // throw instead of returning error
   }
 }
-
-//current user
 
 export async function getCurrentUser() {
   try {
-    return await account.get();
-  } catch (error) {
-    console.log(error);
-    throw error;
+    const currentUser = await account.get();
+    return currentUser;
+  } catch (error: any) {
+    console.error("User not authenticated:", error.message);
+    return null; // no session means no user
   }
 }
 
-//Logout
-export async function logoutAccount() {
+export async function logout(): Promise<void> {
   try {
-    return await account.deleteSession("current");
-  } catch (error) {
-    console.log(error);
+    await account.deleteSession("current");
+    console.log("User logged out successfully");
+  } catch (error: any) {
+    console.error("Logout failed:", error.message);
     throw error;
   }
 }
